@@ -44,6 +44,7 @@ dependencies {
 
 	//spring boot security
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.0.5'
+	implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2")
 
 
 }

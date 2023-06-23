@@ -14,30 +14,28 @@ import java.util.Date;
 @AllArgsConstructor
 public class CardReqDTO {
     private String c_title;
-    private Board board;
+    private Integer b_id;
     private Integer c_position;
     private String c_creator;
     private Integer c_id;
-    private Task task;
+    private Integer t_id;
     private String c_upd_p;
     private String c_del_p;
     private String c_description;
-    private String c_del_yn;
     private Date c_start_date;
     private Date c_end_date;
 
     public Card toEntity(){
         return Card.builder()
                 .c_title(c_title)
-                .board(board)
+                .board(new BoardReqDTO(){{setB_id(b_id);}}.toEntity())
                 .c_position(c_position)
                 .c_creator(c_creator)
                 .c_id(c_id)
-                .task(task)
+                .task(new TaskReqDTO(){{setT_id(t_id);}}.toEntity())
                 .c_upd_p(c_upd_p)
                 .c_del_p(c_del_p)
                 .c_description(c_description)
-                .c_del_yn(c_del_yn)
                 .build();
     }
 }

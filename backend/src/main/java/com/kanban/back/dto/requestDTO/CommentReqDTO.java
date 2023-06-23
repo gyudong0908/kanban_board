@@ -9,17 +9,15 @@ import lombok.*;
 @Builder
 @ToString
 public class CommentReqDTO {
-    private Card card;
-    private UserTable userTable;
-    private String del_yn;
+    private Integer c_id;
+    private String u_id;
     private Integer comment_id;
     private String comment_contents;
 
     public Comment toEntity(){
         return Comment.builder()
-                .card(card)
-                .userTable(userTable)
-                .del_yn(del_yn)
+                .card(new CardReqDTO(){{setC_id(c_id);}}.toEntity())
+                .userTable(new UserTableReqDTO(){{setU_id(u_id);}}.toEntity())
                 .comment_id(comment_id)
                 .comment_contents(comment_contents)
                 .build();

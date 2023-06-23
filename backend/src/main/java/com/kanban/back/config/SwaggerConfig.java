@@ -15,13 +15,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-//    @Bean
-//    public GroupedOpenApi chatOpenApi() {
-//        String[] paths = {"/kanban"};
-//
-//        return GroupedOpenApi.builder()
-//                .group("COUPLE API v1")
-//                .pathsToMatch(paths)
-//                .build();
-//    }
 }

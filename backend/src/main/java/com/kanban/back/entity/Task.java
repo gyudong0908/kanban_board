@@ -9,7 +9,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="task")
@@ -32,7 +34,6 @@ public class Task {
     private String t_creator;
     private String t_upd_p;
     private String t_del_p;
-    private String t_del_yn;
     private Integer t_position;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,12 +45,9 @@ public class Task {
 
 //    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "task", cascade = CascadeType.REMOVE)
+    @OrderBy("c_position asc")
     private List<Card> cards;
 
-    @PrePersist
-    public void prePersist() {
-        this.t_del_yn = this.t_del_yn == null ? "no" : this.t_del_yn;
-    }
     public TaskMainDTO toMainDTO(){
         return TaskMainDTO.builder()
                 .t_id(t_id)
@@ -60,9 +58,8 @@ public class Task {
                 .t_creator(t_creator)
                 .t_upd_p(t_upd_p)
                 .t_del_p(t_del_p)
-                .t_del_yn(t_del_yn)
                 .t_position(t_position)
-                .cards(cards.stream().map(s-> s.toMainDTO()).toList())
+                .cards((Objects.nonNull(cards)) ? cards.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
                 .build();
     }
 
@@ -70,9 +67,6 @@ public class Task {
         if (taskReqDTO.getT_name() != null) this.t_name = taskReqDTO.getT_name();
         if (taskReqDTO.getT_upd_p() != null) this.t_upd_p = taskReqDTO.getT_upd_p();
         if (taskReqDTO.getT_del_p() != null) this.t_del_p = taskReqDTO.getT_del_p();
-        if (taskReqDTO.getT_del_yn() != null) this.t_del_yn = taskReqDTO.getT_del_yn();
         if (taskReqDTO.getT_position() != null) this.t_position = taskReqDTO.getT_position();
     }
-
-
 }

@@ -22,4 +22,5 @@ public class CardDetailDTO {
     private List<CardPartnerDetailDTO> cardPartners;
     private List<CommentDetailDTO> comments;
     private List<TagDetailDTO> tags;
+    private List<FilesDetailDTO> files;
 }

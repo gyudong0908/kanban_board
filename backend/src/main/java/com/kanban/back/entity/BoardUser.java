@@ -37,7 +37,6 @@ public class BoardUser {
     public BoardUserDetailDTO toDetailDTO(){
         return BoardUserDetailDTO.builder()
                 .userTable(userTable.toDetailDTO())
-                .board_user_id(board_user_id)
                 .build();
     }
 

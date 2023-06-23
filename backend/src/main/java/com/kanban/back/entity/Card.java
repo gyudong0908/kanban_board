@@ -12,8 +12,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "card")
@@ -51,7 +53,6 @@ public class Card {
     @LastModifiedDate
     private LocalDateTime c_upd_date;
     private String c_description;
-    private String c_del_yn;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
     private List<CardPartner> cardPartners;
@@ -61,13 +62,13 @@ public class Card {
     private List<Tag> tags;
     @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
     private List<TmpTable> tmpTables;
+    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
+    private List<Files> files;
+    @OneToOne(mappedBy = "card",cascade = CascadeType.REMOVE)
+    private RequestTable requestTable;
     private LocalDate c_start_date;
     private LocalDate c_end_date;
 
-    @PrePersist
-    public void prePersist() {
-        this.c_del_yn = this.c_del_yn == null ? "no" : this.c_del_yn;
-    }
     public CardMainDTO toMainDTO(){
         return CardMainDTO.builder()
                 .c_title(c_title)
@@ -79,22 +80,22 @@ public class Card {
                 .c_del_p(c_del_p)
                 .c_upd_date(c_upd_date)
                 .c_description(c_description)
-                .c_del_yn(c_del_yn)
-                .cardPartners(cardPartners.stream().map(s-> s.toMainDTO()).toList())
-                .comments(comments.stream().map(s-> s.toMainDTO()).toList())
-                .tags(tags.stream().map(s-> s.toMainDTO()).toList())
-                .tmpTables(tmpTables.stream().map(s-> s.toMainDTO()).toList())
+                .cardPartners((Objects.nonNull(cardPartners)) ? cardPartners.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
+                .comments((Objects.nonNull(comments)) ? comments.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
+                .tags((Objects.nonNull(tags)) ? tags.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
+                .tmpTables((Objects.nonNull(tmpTables)) ? tmpTables.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
                 .build();
     }
     public CardDetailDTO toDetailDTO(){
         return CardDetailDTO.builder()
                 .c_id(c_id)
                 .c_description(c_description)
-                .cardPartners(cardPartners.stream().map(s->s.toDetailDTO()).toList())
-                .comments(comments.stream().map(s->s.toDetailDTO()).toList())
-                .tags(tags.stream().map(s->s.toDetailDTO()).toList())
+                .cardPartners((Objects.nonNull(cardPartners)) ? cardPartners.stream().map(s-> s.toDetailDTO()).toList() : Collections.emptyList())
+                .comments((Objects.nonNull(comments)) ? comments.stream().map(s-> s.toDetailDTO()).toList() : Collections.emptyList())
+                .tags((Objects.nonNull(tags)) ? tags.stream().map(s-> s.toDetailDTO()).toList() : Collections.emptyList())
                 .c_start_date(c_start_date)
                 .c_end_date(c_end_date)
+                .files((Objects.nonNull(files)) ? files.stream().map(s-> s.toDetailDTO()).toList() : Collections.emptyList())
                 .build();
     }
 
@@ -104,7 +105,6 @@ public class Card {
         if(cardReqDTO.getC_upd_p() != null) this.c_upd_p = cardReqDTO.getC_upd_p();
         if(cardReqDTO.getC_del_p() != null) this.c_del_p = cardReqDTO.getC_del_p();
         if(cardReqDTO.getC_description() != null) this.c_description = cardReqDTO.getC_description();
-        if(cardReqDTO.getC_del_yn() != null) this.c_del_yn = cardReqDTO.getC_del_yn();
     }
 
 

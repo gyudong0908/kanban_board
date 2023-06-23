@@ -22,7 +22,6 @@ create table board (
     b_create_date datetime NOT NULL comment "board 생성날짜",
     b_upd_date datetime comment "board 수정일자",
     b_creator VARCHAR (100) NOT NULL comment "board 생성자",
-    b_del_yn VARCHAR (100) NOT NULL comment "board 삭제여부",
     b_admin VARCHAR(100) NOT NULL comment "board 관리자"
 );
 
@@ -41,7 +40,6 @@ CREATE TABLE task(
     t_id int NOT NULL AUTO_INCREMENT Primary Key comment "task ID",
     b_id int NOT NULL comment "board ID",
     constraint foreign Key (b_id) references board(b_id),
-    t_del_yn VARCHAR (100) NOT NULL comment "삭제 여부",
     t_position int (100) NOT NULL comment "task 순서"
 );
 
@@ -63,15 +61,14 @@ CREATE TABLE card(
     c_del_p VARCHAR(100) comment "card 삭제자",
     c_upd_date datetime comment "card 수정날짜",
     c_description TEXT comment "card 설명",
-    c_del_yn VARCHAR(100) NOT NULL comment "card 삭제여부",
-    c_start_date date not null comment "업무 시작 날짜",
-    c_end_date date not null comment "업무 마감 날짜"
+    c_start_date date comment "업무 시작 날짜",
+    c_end_date date comment "업무 마감 날짜"
  );
 
 
 -- Tag 테이블 생성
 -- pk: tag_id, fk: c_id
-CREATE TABLE TAG (
+CREATE TABLE tag (
     c_id int NOT NULL comment "card ID",
     constraint foreign key (c_id) references card (c_id),
     tag_id int NOT NULL AUTO_INCREMENT primary Key comment "tag ID",
@@ -92,9 +89,10 @@ CREATE TABLE user_table(
 CREATE TABLE board_user(
     b_id int NOT NULL comment "board ID",
     constraint foreign key (b_id) references board (b_id),
-    u_id VARCHAR (100) NOT NULL primary key comment "사용자 ID",
-    constraint foreign key (u_id) references user_table(u_id)
-    -- board_user_id int NOT NULL AUTO_INCREMENT primary key 
+    u_id VARCHAR (100) NOT NULL comment "사용자 ID",
+    constraint foreign key (u_id) references user_table(u_id),
+    unique(b_id,u_id),
+    board_user_id int NOT NULL AUTO_INCREMENT primary key 
 );
 
 CREATE TABLE  comment(
@@ -102,20 +100,19 @@ CREATE TABLE  comment(
     constraint foreign key (c_id) references card (c_id),
     u_id VARCHAR (100) NOT NULL comment "사용자 ID" ,
     constraint foreign key (u_id) references user_table (u_id),
-    del_yn VARCHAR (100) NOT NULL comment "삭제여부",
     comment_id int NOT NULL AUTO_INCREMENT primary key comment "댓글 ID", 
     comment_date datetime  NOT NULL comment "댓글 생성날짜",
     comment_contents TEXT NOT NULL comment "댓글 내용"
 );
 
-CREATE TABLE tmp_table(
-	tmp_id int 	NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "tmp_table ID",
-	c_id int NOT NULL comment "card ID",
-    constraint foreign key (c_id) references card(c_id),
-    u_id VARCHAR (100) NOT NULL comment "사용자 ID" ,
-    constraint foreign key (u_id) references user_table (u_id),
-    commit_status VARCHAR (100) NOT NULL comment "완료상태"
-    );
+-- CREATE TABLE tmp_table(
+-- 	tmp_id int 	NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT "tmp_table ID",
+-- 	c_id int NOT NULL comment "card ID",
+--     constraint foreign key (c_id) references card(c_id),
+--     u_id VARCHAR (100) NOT NULL comment "사용자 ID" ,
+--     constraint foreign key (u_id) references user_table (u_id),
+--     commit_status VARCHAR (100) NOT NULL comment "완료상태"
+--     );
     
 CREATE TABLE card_partner (
 	b_id int NOT NULL comment "board ID",
@@ -124,15 +121,23 @@ CREATE TABLE card_partner (
     constraint foreign key (c_id) references card(c_id),
     u_id VARCHAR (100) NOT NULL comment "사용자 ID" ,
     constraint foreign key (u_id) references user_table (u_id),
+    unique(u_id,c_id),
     partner_id int NOT NULL AUTO_INCREMENT primary key
 );
 
 create table calendar (
 cal_id int not null auto_increment primary key comment "calendar ID",
 cal_content text comment "schedule 내용",
-del_yn varchar(10) comment "삭제여부",
 cal_date date comment "개별 날짜",
 writer varchar(25) comment "작성자"
+);
+
+create table request_table (
+request_id int not null auto_increment primary key comment "request ID",
+request_date datetime comment "요청 날짜",
+request_user varchar(100) comment "요청 보낸 사람",
+c_id int NOT NULL comment "card ID",
+constraint foreign key (c_id) references card (c_id)
 );
 
 create table files (
@@ -143,6 +148,7 @@ file_ext varchar(10) comment "file 확장자",
 file_size int comment "file 크기",
 file_save_date datetime comment "파일 저장 날짜",
 c_id int NOT NULL comment "card ID",
-constraint foreign key (c_id) references card (c_id)
+constraint foreign key (c_id) references card (c_id),
+file_original_name VARCHAR(100) comment "파일 실제 이름"
 );
 

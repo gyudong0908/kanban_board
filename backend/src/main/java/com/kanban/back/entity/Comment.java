@@ -29,7 +29,6 @@ public class Comment {
     @JsonIgnore
     private UserTable userTable;
 
-    private String del_yn;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comment_id;
@@ -37,14 +36,9 @@ public class Comment {
     private LocalDateTime comment_date;
     private String comment_contents;
 
-    @PrePersist
-    public void prePersist() {
-        this.del_yn = this.del_yn == null ? "no" : this.del_yn;
-    }
     public CommentMainDTO toMainDTO(){
         return CommentMainDTO.builder()
                 .userTable(userTable.toMainDTO())
-                .del_yn(del_yn)
                 .comment_id(comment_id)
                 .comment_date(comment_date)
                 .comment_contents(comment_contents)
@@ -60,7 +54,6 @@ public class Comment {
                 .build();
     }
     public void update(CommentReqDTO commentReqDTO){
-        if(commentReqDTO.getDel_yn() != null) this.del_yn = commentReqDTO.getDel_yn();
         if(commentReqDTO.getComment_contents() != null) this.comment_contents = commentReqDTO.getComment_contents();
     }
 

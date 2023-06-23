@@ -9,7 +9,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -30,11 +32,11 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime b_upd_date;
     private String b_creator;
-    private String b_del_yn;
     private String b_admin;
 
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE) // cascade = CascadeType.REMOVE
+    @OrderBy("t_position asc")
     private List<Task> tasks;
 
 
@@ -44,11 +46,6 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardUser> boardUsers;
 
-    @PrePersist
-    public void prePersist() {
-        this.b_del_yn = this.b_del_yn == null ? "no" : this.b_del_yn;
-    }
-
     public BoardMainDTO toMainDTO(){
         return BoardMainDTO.builder()
                 .b_name(b_name)
@@ -57,17 +54,15 @@ public class Board {
                 .b_create_date(b_create_date)
                 .b_upd_date(b_upd_date)
                 .b_creator(b_creator)
-                .b_del_yn(b_del_yn)
                 .b_admin(b_admin)
-                .tasks(tasks.stream().map(s->s.toMainDTO()).toList())
-                .cardPartners(cardPartners.stream().map(s-> s.toMainDTO()).toList())
+                .tasks((Objects.nonNull(tasks)) ? tasks.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
+                .cardPartners((Objects.nonNull(cardPartners)) ? cardPartners.stream().map(s-> s.toMainDTO()).toList() : Collections.emptyList())
                 .build();
     }
 
     public void update(BoardReqDTO boardReqDTO){
         if(boardReqDTO.getB_name() != null) this.b_name = boardReqDTO.getB_name();
         if(boardReqDTO.getB_goal() != null) this.b_goal = boardReqDTO.getB_goal();
-        if(boardReqDTO.getB_del_yn() != null) this.b_del_yn = boardReqDTO.getB_del_yn();
         if(boardReqDTO.getB_admin() != null) this.b_admin = boardReqDTO.getB_admin();
     }
 

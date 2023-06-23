@@ -9,16 +9,16 @@ import lombok.*;
 @Builder
 @ToString
 public class CardPartnerReqDTO {
-    private Board board;
-    private Card card;
-    private UserTable userTable;
+    private Integer b_id;
+    private Integer c_id;
+    private String u_id;
     private Integer partner_id;
 
     public CardPartner toEntity(){
         return CardPartner.builder()
-                .board(board)
-                .card(card)
-                .userTable(userTable)
+                .board(new BoardReqDTO(){{setB_id(b_id);}}.toEntity())
+                .card(new CardReqDTO(){{setC_id(c_id);}}.toEntity())
+                .userTable(new UserTableReqDTO(){{setU_id(u_id);}}.toEntity())
                 .partner_id(partner_id)
                 .build();
     }

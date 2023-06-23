@@ -14,7 +14,6 @@ public class BoardReqDTO {
     private String b_goal;
     private Integer b_id;
     private String b_creator;
-    private String b_del_yn;
     private String b_admin;
 
     public Board toEntity(){
@@ -23,7 +22,6 @@ public class BoardReqDTO {
                 .b_goal(b_goal)
                 .b_id(b_id)
                 .b_creator(b_creator)
-                .b_del_yn(b_del_yn)
                 .b_admin(b_admin)
                 .build();
     }

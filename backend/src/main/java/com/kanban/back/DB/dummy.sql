@@ -25,7 +25,7 @@ BEGIN
     WHILE i <= 30 DO
     while j <=4 Do
 		case
-			when (j=1) then set name = "To do";
+			when (j=1) then set name = "Todo";
             when (j=2) then set name = "doing";
             when (j=3) then set name = "test";
             when (j=4) then set name = "done";

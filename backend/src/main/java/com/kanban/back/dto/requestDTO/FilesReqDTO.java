@@ -1,6 +1,7 @@
 package com.kanban.back.dto.requestDTO;
 
 
+import com.kanban.back.entity.Card;
 import com.kanban.back.entity.Files;
 
 import lombok.*;
@@ -17,7 +18,8 @@ public class FilesReqDTO {
     private String file_path;
     private String file_ext;
     private Long file_size;
-    private CardReqDTO cardReqDTO;
+    private String file_original_name;
+    private Integer c_id;
 
     public Files toEntity(){
         return Files.builder()
@@ -26,7 +28,8 @@ public class FilesReqDTO {
                 .file_path(file_path)
                 .file_ext(file_ext)
                 .file_size(file_size)
-                .card(cardReqDTO.toEntity())
+                .file_original_name(file_original_name)
+                .card(new CardReqDTO(){{setC_id(c_id);}}.toEntity())
                 .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.kanban.back.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kanban.back.dto.reponseDTO.detailpageDTO.FilesDetailDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -25,9 +26,18 @@ public class Files {
     private String file_name;
     private String file_path;
     private String file_ext;
+    private String file_original_name;
     private Long file_size;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "c_id", referencedColumnName = "c_id")
     @JsonIgnore
     private Card card;
+
+    public FilesDetailDTO toDetailDTO(){
+        return FilesDetailDTO.builder()
+                .file_id(file_id)
+                .file_original_name(file_original_name)
+                .file_save_date(file_save_date)
+                .build();
+    }
 }

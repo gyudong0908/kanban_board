@@ -21,7 +21,6 @@ public class TaskMainDTO {
     private String t_creator;
     private String t_upd_p;
     private String t_del_p;
-    private String t_del_yn;
     private Integer t_position;
     private List<CardMainDTO> cards;
 }

@@ -22,7 +22,6 @@ public class CardMainDTO {
     private String c_del_p;
     private LocalDateTime c_upd_date;
     private String c_description;
-    private String c_del_yn;
     private List<CardPartnerMainDTO> cardPartners;
     private List<CommentMainDTO> comments;
     private List<TagMainDTO> tags;

@@ -9,5 +9,4 @@ import lombok.*;
 @ToString
 public class BoardUserDetailDTO {
     private UserTableDetailDTO userTable;
-    private Integer board_user_id;
 }

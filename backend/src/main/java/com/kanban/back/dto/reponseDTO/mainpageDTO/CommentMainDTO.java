@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentMainDTO {
     private UserTableMainDTO userTable;
-    private String del_yn;
     private Integer comment_id;
     private LocalDateTime comment_date;
     private String comment_contents;

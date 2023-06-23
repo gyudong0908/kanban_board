@@ -9,14 +9,14 @@ import lombok.*;
 @Builder
 @ToString
 public class BoardUserReqDTO {
-    private Board board;
-    private UserTable userTable;
+    private Integer b_id;
+    private String  u_id;
     private Integer board_user_id;
 
     public BoardUser toEntity(){
         return BoardUser.builder()
-                .board(board)
-                .userTable(userTable)
+                .board(new BoardReqDTO(){{setB_id(b_id);}}.toEntity())
+                .userTable(new UserTableReqDTO(){{setU_id(u_id);}}.toEntity())
                 .board_user_id(board_user_id)
                 .build();
     }

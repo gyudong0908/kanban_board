@@ -17,9 +17,8 @@ public class TaskReqDTO {
     private String t_creator;
     private String t_upd_p;
     private String t_del_p;
-    private String t_del_yn;
     private Integer t_position;
-    private Board board;
+    private Integer b_id;
 
     public Task toEntity(){
         return Task.builder()
@@ -29,9 +28,8 @@ public class TaskReqDTO {
                 .t_creator(t_creator)
                 .t_upd_p(t_upd_p)
                 .t_del_p(t_del_p)
-                .t_del_yn(t_del_yn)
                 .t_position(t_position)
-                .board(board)
+                .board(new BoardReqDTO(){{setB_id(b_id);}}.toEntity())
                 .build();
     }
 }
