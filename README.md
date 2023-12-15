@@ -1,4 +1,4 @@
-# kanbanBoard(5인 프로젝트)
+# kanbanBoard(4인 프로젝트)
 - 역할: backend
 ## Design ☄️
 ![image](https://github.com/gyudong0908/kanban_board/assets/121427661/393a25e7-46e9-4819-84f7-36a1d752f120)
